@@ -16,14 +16,25 @@
   </header>
   <main>
     <h1>Overlook</h1>
+    <aside>
+      <form>
+        <p>Filter</p>
+        <input type="date" name="Input date" />
+        <label for="room-type">Room Type
+          <select name="room-type" id="room-type">
+            <option value="none">None</option>
+            <option value="one-bed">One Bed</option>
+          </select>
+        </label>
+        <input type="submit" />
+      </form>
+    </aside>
+    <section class="available-rooms">
+      <h2>Available Rooms</h2>
+    </section>
     <section class="bookings">
       <h2>Your bookings</h2>
-      <div>
-        
-      </div>
-    </section>
-    <section class="available-rooms hidden">
-      <h2>Available Rooms</h2>
+      <p>Log in to see your bookings!</p>
     </section>
   </main>
   <!-- <img src="./images/turing-logo.png" alt="turing logo"> -->
