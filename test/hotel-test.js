@@ -1,0 +1,60 @@
+import chai from 'chai';
+const expect = chai.expect;
+
+import bookingData from '../src/testData/bookingData';
+import Booking from '../src/classes/Booking';
+import roomData from '../src/testData/roomData';
+import Room from '../src/classes/Room';
+import customersData from '../src/testData/customersData';
+import Customers from '../src/classes/Customers';
+import Hotel from '../src/classes/Hotel';
+
+describe('Hotel test', () => {
+  let hotel;
+
+  beforeEach(() => {
+    hotel = new Hotel (customersData);
+  })
+
+  it('should be a function', () => {
+    expect(hotel).to.be.an.instanceOf(Hotel);
+  })
+
+  it('should use a method to create an array of bookings', () => {
+    expect(hotel.bookings).to.be.undefined;
+
+    hotel.generateBookings(bookingData);
+
+    expect(hotel.bookings).to.be.lengthOf(bookingData.length);
+  })
+
+  it('should use a method to get all rooms', () => {
+    expect(hotel.rooms).to.be.undefined;
+
+    hotel.generateRooms(roomData);
+
+    expect(hotel.rooms).to.be.lengthOf(roomData.length);
+  })
+
+  it('should list the available rooms', () => {
+    hotel.customers.selectCurrentCustomer(1);
+    hotel.generateBookings(bookingData);
+    hotel.generateRooms(roomData);
+    hotel.showAvailable('2022/02/16');
+    expect(hotel.availableRooms).to.be.lengthOf(9);
+  })
+
+  it('should list rooms the user has booked', () => {
+    hotel.customers.selectCurrentCustomer(1);
+    hotel.generateBookings(bookingData);
+    hotel.generateRooms(roomData);
+
+    hotel.showBooked();
+
+    expect(hotel.bookedRooms).to.be.lengthOf(2);
+
+    hotel.showBooked("2022/01/10");
+
+    expect(hotel.bookedRooms).to.be.lengthOf(1);
+  })
+})
