@@ -12,6 +12,7 @@ const loginPage = document.querySelector('.login');
 const usernameInput = document.querySelector('.username');
 const passwordInput = document.querySelector('.password');
 const loginBtn = document.querySelector('.login-button');
+const dashboard = document.querySelector('.dashboard');
 let hotel;
 
 // Event Listeners
@@ -25,7 +26,7 @@ window.addEventListener('load', () => {
     });
 })
 
-loginBtn.addEventListener('click', function() {
+loginBtn.addEventListener('click', () => {
   login();
 })
 
@@ -38,17 +39,28 @@ function login() {
 
   if(password === 'overlook2021') {
     const userID = Number(username.slice('8'))
-    console.log(userID)
     getSpecificCustomer(userID)
     .then(user => hotel.customers.selectCurrentCustomer(user))
-    .then(() => console.log(hotel.customers))
+    .then(() => {
+      renderBookings()
+      hide(loginPage);
+      show(dashboard);
+    })
   }
 };
+
+function renderBookings() {
+  hotel.showBooked();
+  console.log(hotel.bookedRooms)
+  hotel.bookedRooms.forEach(room => {
+    
+  })
+}
 
 function hide(element) {
   element.classList.add('hidden');
 }
 
 function show(element) {
-  element.classlist.remove('hidden');
+  element.classList.remove('hidden');
 }
