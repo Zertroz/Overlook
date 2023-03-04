@@ -13,7 +13,12 @@ const usernameInput = document.querySelector('.username');
 const passwordInput = document.querySelector('.password');
 const loginBtn = document.querySelector('.login-button');
 const dashboard = document.querySelector('.dashboard');
-const bookings = document.querySelector('.bookings-section');
+const bookingsPage = document.querySelector('.bookings-page')
+const bookingsSection = document.querySelector('.bookings-section');
+const availableSection = document.querySelector('.available-page')
+const availableBtn = document.querySelector('.available-button');
+const bookingSectionBtn = document.querySelector('.bookings-section-button');
+
 let hotel;
 
 // Event Listeners
@@ -31,6 +36,17 @@ loginBtn.addEventListener('click', () => {
   login();
 })
 
+bookingSectionBtn.addEventListener('click', () => {
+  renderBookings()
+  show(bookingsPage);
+  hide(availableSection);
+})
+
+availableBtn.addEventListener('click', () => {
+  hide(bookingsPage);
+  show(availableSection);
+})
+
 // Functions
 
 function login() {
@@ -46,17 +62,18 @@ function login() {
       renderBookings()
       hide(loginPage);
       show(dashboard);
+      show(bookingSectionBtn);
+      show(availableBtn);
     })
   }
 };
 
 function renderBookings() {
   hotel.showBooked();
-  console.log(hotel.bookedRooms)
+  bookingsSection.innerHTML = ''
   hotel.bookedRooms.forEach(room => {
-    console.log('run')
-    bookings.innerHTML += `
-    <div class="booking-card" id="${room.roomNumber}">
+    bookingsSection.innerHTML += `
+    <div class="booking-card" id="${room.id}">
       <p>Room ${room.roomNumber}</p>
       <p>${room.date}</p>
     </div>
