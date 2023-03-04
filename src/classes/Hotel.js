@@ -38,9 +38,8 @@ class Hotel {
       bookedRooms = this.bookings
       .filter(booking => booking.userID === this.customers.currentCustomer.id)
     }
-    
-    const bookedRoomNumbers = bookedRooms.map(booking => booking.roomNumber)
-    this.bookedRooms = this.rooms.filter(room => bookedRoomNumbers.includes(room.number));
+
+    this.bookedRooms = bookedRooms
   }
 
 }
