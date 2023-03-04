@@ -45,7 +45,10 @@ describe('Hotel test', () => {
   })
 
   it('should list rooms the user has booked', () => {
-    hotel.customers.selectCurrentCustomer(1);
+    hotel.customers.selectCurrentCustomer({
+      "id": 1,
+      "name": "Leatha Ullrich"
+    });
     hotel.generateBookings(bookingData);
     hotel.generateRooms(roomData);
 

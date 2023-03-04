@@ -4,8 +4,8 @@ class Customers {
     this.currentCustomer;
   }
 
-  selectCurrentCustomer(id) {
-    this.currentCustomer = this.allCustomers[id - 1]
+  selectCurrentCustomer(user) {
+    this.currentCustomer = user
   }
 }
 

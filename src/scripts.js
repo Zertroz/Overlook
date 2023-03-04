@@ -1,16 +1,66 @@
-// This is the JavaScript entry file - your code begins here
-// Do not delete or rename this file ********
+// Imports
 
-// An example of how you tell webpack to use a CSS (SCSS) file
 import './css/styles.css';
-
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
 import { getData, getSpecificCustomer } from './apiCalls'
+import Hotel from './classes/Hotel';
+import Customers from './classes/Customers';
 
+// Global Variables
 
-console.log('This is the JavaScript entry file - your code begins here.');
+const loginPage = document.querySelector('.login');
+const usernameInput = document.querySelector('.username');
+const passwordInput = document.querySelector('.password');
+const loginBtn = document.querySelector('.login-button');
+const dashboard = document.querySelector('.dashboard');
+let hotel;
+
+// Event Listeners
 
 window.addEventListener('load', () => {
   getData()
+    .then((data) => {
+      hotel = new Hotel (data[0].customers);
+      hotel.generateRooms(data[1].rooms);
+      hotel.generateBookings(data[2].bookings);
+    });
 })
+
+loginBtn.addEventListener('click', () => {
+  login();
+})
+
+// Functions
+
+function login() {
+  event.preventDefault()
+  const username = usernameInput.value;
+  const password = passwordInput.value;
+
+  if(password === 'overlook2021') {
+    const userID = Number(username.slice('8'))
+    getSpecificCustomer(userID)
+    .then(user => hotel.customers.selectCurrentCustomer(user))
+    .then(() => {
+      renderBookings()
+      hide(loginPage);
+      show(dashboard);
+    })
+  }
+};
+
+function renderBookings() {
+  hotel.showBooked();
+  console.log(hotel.bookedRooms)
+  hotel.bookedRooms.forEach(room => {
+    
+  })
+}
+
+function hide(element) {
+  element.classList.add('hidden');
+}
+
+function show(element) {
+  element.classList.remove('hidden');
+}

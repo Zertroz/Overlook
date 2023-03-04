@@ -20,15 +20,24 @@ describe('Customer Tests', function() {
   })
 
   it('should be able to set a current customer', function() {
-    customers.selectCurrentCustomer(1);
-    expect(customers.currentCustomer).to.equal(customersData[0]);
+    customers.selectCurrentCustomer({
+      "id": 1,
+      "name": "Leatha Ullrich"
+    });
+    expect(customers.currentCustomer).to.deep.equal(customersData[0]);
   })
 
   it('should be able to select and reassign a different customer', function() {
-    customers.selectCurrentCustomer(1);
-    expect(customers.currentCustomer).to.equal(customersData[0]);
+    customers.selectCurrentCustomer({
+      "id": 1,
+      "name": "Leatha Ullrich"
+    });
+    expect(customers.currentCustomer).to.deep.equal(customersData[0]);
 
-    customers.selectCurrentCustomer(5);
-    expect(customers.currentCustomer).to.equal(customersData[4]);
+    customers.selectCurrentCustomer({
+      "id": 5,
+      "name": "Rhiannon Little"
+    });
+    expect(customers.currentCustomer).to.deep.equal(customersData[4]);
   })
 })
