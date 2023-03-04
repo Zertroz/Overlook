@@ -13,6 +13,7 @@ const usernameInput = document.querySelector('.username');
 const passwordInput = document.querySelector('.password');
 const loginBtn = document.querySelector('.login-button');
 const dashboard = document.querySelector('.dashboard');
+const bookings = document.querySelector('.bookings-section');
 let hotel;
 
 // Event Listeners
@@ -53,7 +54,13 @@ function renderBookings() {
   hotel.showBooked();
   console.log(hotel.bookedRooms)
   hotel.bookedRooms.forEach(room => {
-    
+    console.log('run')
+    bookings.innerHTML += `
+    <div class="booking-card" id="${room.roomNumber}">
+      <p>Room ${room.roomNumber}</p>
+      <p>${room.date}</p>
+    </div>
+    `
   })
 }
 
