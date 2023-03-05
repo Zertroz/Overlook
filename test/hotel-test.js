@@ -60,4 +60,19 @@ describe('Hotel test', () => {
 
     expect(hotel.bookedRooms).to.be.lengthOf(1);
   })
+
+  it('should be able to filter available rooms by type', () => {
+    hotel.customers.selectCurrentCustomer({
+      "id": 1,
+      "name": "Leatha Ullrich"
+    });
+    hotel.generateBookings(bookingData);
+    hotel.generateRooms(roomData);
+
+    hotel.showAvailable('2022/04/22');
+
+    hotel.filterByType('single room');
+
+    expect(hotel.availableRooms).to.be.lengthOf(5);
+  })
 })
