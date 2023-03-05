@@ -4,7 +4,6 @@ import './css/styles.css';
 import './images/turing-logo.png'
 import { getData, getSpecificCustomer } from './apiCalls'
 import Hotel from './classes/Hotel';
-import Customers from './classes/Customers';
 
 // Global Variables
 
@@ -13,9 +12,10 @@ const usernameInput = document.querySelector('.username');
 const passwordInput = document.querySelector('.password');
 const loginBtn = document.querySelector('.login-button');
 const dashboard = document.querySelector('.dashboard');
-const bookingsPage = document.querySelector('.bookings-page')
+const bookingsPage = document.querySelector('.bookings-page');
 const bookingsSection = document.querySelector('.bookings-section');
-const availableSection = document.querySelector('.available-page')
+const availablePage = document.querySelector('.available-page');
+const availableSection = document.querySelector('.available-section');
 const availableBtn = document.querySelector('.available-button');
 const bookingSectionBtn = document.querySelector('.bookings-section-button');
 
@@ -37,20 +37,21 @@ loginBtn.addEventListener('click', () => {
 })
 
 bookingSectionBtn.addEventListener('click', () => {
-  renderBookings()
+  renderBookings();
   show(bookingsPage);
-  hide(availableSection);
+  hide(availablePage);
 })
 
 availableBtn.addEventListener('click', () => {
+  showAvailable('2022/04/22');
   hide(bookingsPage);
-  show(availableSection);
+  show(availablePage);
 })
 
 // Functions
 
 function login() {
-  event.preventDefault()
+  event.preventDefault();
   const username = usernameInput.value;
   const password = passwordInput.value;
 
@@ -59,13 +60,13 @@ function login() {
     getSpecificCustomer(userID)
     .then(user => hotel.customers.selectCurrentCustomer(user))
     .then(() => {
-      renderBookings()
+      renderBookings();
       hide(loginPage);
       show(dashboard);
       show(bookingSectionBtn);
       show(availableBtn);
-    })
-  }
+    });
+  };
 };
 
 function renderBookings() {
@@ -77,7 +78,32 @@ function renderBookings() {
       <p>Room ${room.roomNumber}</p>
       <p>${room.date}</p>
     </div>
-    `
+    `;
+  });
+}
+
+function showAvailable(date) {
+  hotel.showAvailable(date);
+  availableSection.innerHTML = ''
+  console.log(hotel.availableRooms)
+  hotel.availableRooms.forEach(room => {
+    if(room.bidet) {
+      availableSection.innerHTML += `
+      <div class="available-card">
+        <p>Room #${room.number}</p>
+        <p>This is a ${room.type} with ${room.numBeds} ${room.bedSize} bed(s). Bidet Included!</p>
+        <p>Cost per night: $${room.costPerNight}
+      </div>
+      `
+    } else {
+      availableSection.innerHTML += `
+      <div class="available-card">
+        <p>Room #${room.number}</p>
+        <p>This is a ${room.type} with ${room.numBeds} ${room.bedSize} bed(s).</p>
+        <p>Cost per night: $${room.costPerNight}
+      </div>
+      `
+    }
   })
 }
 
