@@ -29,19 +29,22 @@ class Hotel {
   }
 
   showBooked(date) {
-    let bookedRooms
+    let bookedRooms;
     if (date) {
       bookedRooms = this.bookings
       .filter(booking => booking.userID === this.customers.currentCustomer.id)
-      .filter(booking => booking.date === date)
+      .filter(booking => booking.date === date);
     } else {
       bookedRooms = this.bookings
-      .filter(booking => booking.userID === this.customers.currentCustomer.id)
+      .filter(booking => booking.userID === this.customers.currentCustomer.id);
     }
 
-    this.bookedRooms = bookedRooms
+    this.bookedRooms = bookedRooms;
   }
 
+  filterByType(type) {
+    this.availableRooms = this.availableRooms.filter(room => room.type === type);
+  }
 }
 
 export default Hotel
