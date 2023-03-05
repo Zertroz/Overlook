@@ -80,6 +80,7 @@ function renderBookings() {
     </div>
     `;
   });
+  bookingsSection.innerHTML += `<p>Total Spent: $${hotel.getTotal().toFixed(2)}` 
 }
 
 function showAvailable(date) {

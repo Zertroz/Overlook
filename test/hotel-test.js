@@ -75,4 +75,17 @@ describe('Hotel test', () => {
 
     expect(hotel.availableRooms).to.be.lengthOf(5);
   })
+
+  it('should calculate the total cost spent on rooms', () => {
+    hotel.customers.selectCurrentCustomer({
+      "id": 1,
+      "name": "Leatha Ullrich"
+    });
+    hotel.generateBookings(bookingData);
+    hotel.generateRooms(roomData);
+
+    hotel.showBooked()
+
+    expect(hotel.getTotal()).to.equal(835.78)
+  })
 })

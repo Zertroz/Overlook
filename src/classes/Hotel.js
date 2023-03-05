@@ -45,6 +45,16 @@ class Hotel {
   filterByType(type) {
     this.availableRooms = this.availableRooms.filter(room => room.type === type);
   }
+
+  getTotal() {
+    const roomNumbers = this.bookedRooms.map(room => room.roomNumber)
+    const totalSpent = this.rooms.filter(room => roomNumbers.includes(room.number))
+      .reduce((acc, curr) => {
+        acc += curr.costPerNight
+        return acc
+      }, 0)
+    return totalSpent
+  }
 }
 
 export default Hotel
