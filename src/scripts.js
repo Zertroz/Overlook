@@ -22,6 +22,7 @@ const filterForm = document.querySelector('.filter-form');
 const dateInput = document.querySelector('.date-input');
 const typeSelect = document.querySelector('.type-select');
 const submitBtn = document.querySelector('.submit-button');
+const errorMsg = document.querySelector('.error-msg');
 
 let hotel;
 
@@ -85,9 +86,9 @@ function login() {
   event.preventDefault();
   const username = usernameInput.value;
   const password = passwordInput.value;
-
-  if(password === 'overlook2021') {
-    const userID = Number(username.slice('8'))
+  const userID = parseInt(username.split('customer')[1])
+  console.log(userID)
+  if(password === 'overlook2021' && username.includes('customer') && userID >= 1 && userID <= 50) {
     getSpecificCustomer(userID)
     .then(user => hotel.customers.selectCurrentCustomer(user))
     .then(() => {
@@ -98,6 +99,10 @@ function login() {
       show(bookingSectionBtn);
       show(availableBtn);
     });
+  } else if (!password || !username) {
+    errorMsg.innerText = 'Please enter a valid username and password.';
+  } else if (password !== 'overlook2021' || !username.includes('customer') || userID < 1 || userID > 50) {
+    errorMsg.innerText = 'Username or password is incorrect.';
   };
 };
 
@@ -106,7 +111,7 @@ function renderBookings() {
   bookingsSection.innerHTML = '';
   hotel.bookedRooms.forEach(room => {
     bookingsSection.innerHTML += `
-    <div class="booking-card" id="${room.id}">
+    <div class="booking-card" id="${room.id}" tabindex="0">
       <p>Room ${room.roomNumber}</p>
       <p>${room.date}</p>
     </div>
