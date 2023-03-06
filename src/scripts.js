@@ -75,7 +75,6 @@ function resolvePost() {
     .then((data) => {
       hotel.generateRooms(data[1].rooms);
       hotel.generateBookings(data[2].bookings);
-      console.log('hi')
       renderTypes();
       hotel.showBooked()
       showAvailable();
@@ -118,9 +117,7 @@ function renderBookings() {
 
 function showAvailable() {
   const date = dateInput.value.split('-').join('/');
-  console.log(date)
   const type = typeSelect.value;
-  console.log(hotel.bookings)
   hotel.findAvailable(date);
   filterAvailable(type);
   if(date && hotel.availableRooms.length !== 0) {
