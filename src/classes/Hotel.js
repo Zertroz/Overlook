@@ -19,25 +19,22 @@ class Hotel {
     this.rooms = data.map(room => new Room (room));
   }
 
-  showAvailable(date) {
+  findAvailable(date) {
+    console.log(this.customers.currentCustomer.id)
     const availableBookings = this.bookings
-    .filter(booking => booking.userID !== this.customers.currentCustomer.id)
     .filter(booking => booking.date === date);
-    
+    console.log(availableBookings)
     const bookedRoomNumbers = availableBookings.map(booking => booking.roomNumber)
+    console.log(bookedRoomNumbers)
     this.availableRooms = this.rooms.filter(room => !bookedRoomNumbers.includes(room.number));
+    console.log(this.availableRooms)
   }
 
-  showBooked(date) {
+  showBooked() {
     let bookedRooms;
-    if (date) {
-      bookedRooms = this.bookings
+    console.log(this.customers.currentCustomer)
+    bookedRooms = this.bookings
       .filter(booking => booking.userID === this.customers.currentCustomer.id)
-      .filter(booking => booking.date === date);
-    } else {
-      bookedRooms = this.bookings
-      .filter(booking => booking.userID === this.customers.currentCustomer.id);
-    }
 
     this.bookedRooms = bookedRooms;
   }

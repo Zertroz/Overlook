@@ -2,7 +2,7 @@
 
 import './css/styles.css';
 import './images/turing-logo.png'
-import { getData, getSpecificCustomer } from './apiCalls'
+import { getData, getSpecificCustomer, postBooking } from './apiCalls'
 import Hotel from './classes/Hotel';
 
 // Global Variables
@@ -28,13 +28,7 @@ let hotel;
 // Event Listeners
 
 window.addEventListener('load', () => {
-  getData()
-    .then((data) => {
-      hotel = new Hotel (data[0].customers);
-      hotel.generateRooms(data[1].rooms);
-      hotel.generateBookings(data[2].bookings);
-      renderTypes()
-    });
+  resolveData();
 })
 
 loginBtn.addEventListener('click', () => {
@@ -56,10 +50,37 @@ availableBtn.addEventListener('click', () => {
 })
 
 submitBtn.addEventListener('click', () => {
-  filterAvailable();
+  event.preventDefault();
+  showAvailable();
+})
+
+availablePage.addEventListener('click', () => {
+  createNewBooking();
 })
 
 // Functions
+
+function resolveData() {
+  getData()
+    .then((data) => {
+      hotel = new Hotel (data[0].customers);
+      hotel.generateRooms(data[1].rooms);
+      hotel.generateBookings(data[2].bookings);
+      renderTypes();
+    });
+}
+
+function resolvePost() {
+  getData()
+    .then((data) => {
+      hotel.generateRooms(data[1].rooms);
+      hotel.generateBookings(data[2].bookings);
+      console.log('hi')
+      renderTypes();
+      hotel.showBooked()
+      showAvailable();
+    });
+}
 
 function login() {
   event.preventDefault();
@@ -95,24 +116,32 @@ function renderBookings() {
   bookingsSection.innerHTML += `<p>Total Spent: $${hotel.getTotal().toFixed(2)}` 
 }
 
-function showAvailable(date) {
+function showAvailable() {
+  const date = dateInput.value.split('-').join('/');
+  console.log(date)
+  const type = typeSelect.value;
+  console.log(hotel.bookings)
+  hotel.findAvailable(date);
+  filterAvailable(type);
   if(date && hotel.availableRooms.length !== 0) {
     availableSection.innerHTML = ''
     hotel.availableRooms.forEach(room => {
       if(room.bidet) {
         availableSection.innerHTML += `
-        <div class="available-card">
+        <div class="available-card" id="${room.number}">
           <p>Room #${room.number}</p>
           <p>This is a ${room.type} with ${room.numBeds} ${room.bedSize} bed(s). Bidet Included!</p>
-          <p>Cost per night: $${room.costPerNight}
+          <p>Cost per night: $${room.costPerNight}</p>
+          <button class="book-button">Book this room</button>
         </div>
         `
       } else {
         availableSection.innerHTML += `
-        <div class="available-card">
+        <div class="available-card" id="${room.number}">
           <p>Room #${room.number}</p>
           <p>This is a ${room.type} with ${room.numBeds} ${room.bedSize} bed(s).</p>
-          <p>Cost per night: $${room.costPerNight}
+          <p>Cost per night: $${room.costPerNight}</p>
+          <button class="book-button">Book this room</button>
         </div>
         `
       }
@@ -124,16 +153,10 @@ function showAvailable(date) {
   }
 }
 
-function filterAvailable() {
-  event.preventDefault();
-  const date = dateInput.value.split('-').join('/');
-  const type = typeSelect.value;
-
-  hotel.showAvailable(date);
+function filterAvailable(type) {
   if(type !== 'none') {
     hotel.filterByType(type);
   }
-  showAvailable(date);
 }
 
 function renderTypes() {
@@ -145,6 +168,17 @@ function renderTypes() {
   })
 }
 
+function createNewBooking() {
+  if(event.target.className === 'book-button') {
+    const newBooking = {
+      userID: hotel.customers.currentCustomer.id,
+      date: dateInput.value.split('-').join('/'),
+      roomNumber: Number(event.target.parentElement.id)
+    }
+    postBooking(newBooking)
+  }
+}
+
 function hide(element) {
   element.classList.add('hidden');
 }
@@ -152,3 +186,5 @@ function hide(element) {
 function show(element) {
   element.classList.remove('hidden');
 }
+
+export default resolvePost
