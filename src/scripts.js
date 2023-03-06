@@ -45,17 +45,20 @@ bookingSectionBtn.addEventListener('click', () => {
   renderBookings();
   show(bookingsPage);
   hide(availablePage);
+  hide(filterForm);
 })
 
 availableBtn.addEventListener('click', () => {
   showAvailable();
   hide(bookingsPage);
   show(availablePage);
+  show(filterForm);
 })
 
 submitBtn.addEventListener('click', () => {
   filterAvailable();
 })
+
 // Functions
 
 function login() {
@@ -93,8 +96,7 @@ function renderBookings() {
 }
 
 function showAvailable(date) {
-  if(date) {
-    hotel.showAvailable(date);
+  if(date && hotel.availableRooms.length !== 0) {
     availableSection.innerHTML = ''
     hotel.availableRooms.forEach(room => {
       if(room.bidet) {
@@ -115,8 +117,10 @@ function showAvailable(date) {
         `
       }
     })
+  } else if (date && hotel.availableRooms.length === 0) {
+    availableSection.innerHTML = `<p>We deeply apologize, but there are no room available for this date.`
   } else {
-    availableSection.innerHTML = `<p>Please insert a date</p>`
+    availableSection.innerHTML = `<p>Please select a date.</p>`
   }
 }
 
@@ -126,7 +130,9 @@ function filterAvailable() {
   const type = typeSelect.value;
 
   hotel.showAvailable(date);
-  hotel.filterByType(type);
+  if(type !== 'none') {
+    hotel.filterByType(type);
+  }
   showAvailable(date);
 }
 
@@ -134,7 +140,6 @@ function renderTypes() {
   typeSelect.innerHTML = '<option value="none">None</option>'
   const roomList = hotel.rooms.map(room => room.type)
   const roomTypes = [... new Set(roomList)]
-  console.log(roomTypes)
   roomTypes.forEach(room => {
     typeSelect.innerHTML += `<option value="${room}">${room.toUpperCase()}</option>`
   })
