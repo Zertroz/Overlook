@@ -28,16 +28,11 @@ class Hotel {
     this.availableRooms = this.rooms.filter(room => !bookedRoomNumbers.includes(room.number));
   }
 
-  showBooked(date) {
+  showBooked() {
     let bookedRooms;
-    if (date) {
-      bookedRooms = this.bookings
+    console.log(this.customers.currentCustomer)
+    bookedRooms = this.bookings
       .filter(booking => booking.userID === this.customers.currentCustomer.id)
-      .filter(booking => booking.date === date);
-    } else {
-      bookedRooms = this.bookings
-      .filter(booking => booking.userID === this.customers.currentCustomer.id);
-    }
 
     this.bookedRooms = bookedRooms;
   }

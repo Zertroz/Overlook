@@ -2,7 +2,7 @@
 
 import './css/styles.css';
 import './images/turing-logo.png'
-import { getData, getSpecificCustomer } from './apiCalls'
+import { getData, getSpecificCustomer, postBooking } from './apiCalls'
 import Hotel from './classes/Hotel';
 
 // Global Variables
@@ -28,13 +28,7 @@ let hotel;
 // Event Listeners
 
 window.addEventListener('load', () => {
-  getData()
-    .then((data) => {
-      hotel = new Hotel (data[0].customers);
-      hotel.generateRooms(data[1].rooms);
-      hotel.generateBookings(data[2].bookings);
-      renderTypes()
-    });
+  resolveData();
 })
 
 loginBtn.addEventListener('click', () => {
@@ -59,7 +53,32 @@ submitBtn.addEventListener('click', () => {
   filterAvailable();
 })
 
+availablePage.addEventListener('click', () => {
+  createNewBooking();
+})
+
 // Functions
+
+function resolveData() {
+  getData()
+    .then((data) => {
+      hotel = new Hotel (data[0].customers);
+      hotel.generateRooms(data[1].rooms);
+      hotel.generateBookings(data[2].bookings);
+      renderTypes();
+    });
+}
+
+function resolvePost(date) {
+  getData()
+    .then((data) => {
+      hotel.generateRooms(data[1].rooms);
+      hotel.generateBookings(data[2].bookings);
+      renderTypes();
+      hotel.showAvailable(date);
+      showAvailable(date);
+    });
+}
 
 function login() {
   event.preventDefault();
@@ -101,18 +120,20 @@ function showAvailable(date) {
     hotel.availableRooms.forEach(room => {
       if(room.bidet) {
         availableSection.innerHTML += `
-        <div class="available-card">
+        <div class="available-card" id="${room.number}">
           <p>Room #${room.number}</p>
           <p>This is a ${room.type} with ${room.numBeds} ${room.bedSize} bed(s). Bidet Included!</p>
-          <p>Cost per night: $${room.costPerNight}
+          <p>Cost per night: $${room.costPerNight}</p>
+          <button class="book-button">Book this room</button>
         </div>
         `
       } else {
         availableSection.innerHTML += `
-        <div class="available-card">
+        <div class="available-card" id="${room.number}">
           <p>Room #${room.number}</p>
           <p>This is a ${room.type} with ${room.numBeds} ${room.bedSize} bed(s).</p>
-          <p>Cost per night: $${room.costPerNight}
+          <p>Cost per night: $${room.costPerNight}</p>
+          <button class="book-button">Book this room</button>
         </div>
         `
       }
@@ -145,6 +166,19 @@ function renderTypes() {
   })
 }
 
+function createNewBooking() {
+  if(event.target.className === 'book-button') {
+    const newBooking = {
+      userID: hotel.customers.currentCustomer.id,
+      date: dateInput.value.split('-').join('/'),
+      roomNumber: Number(event.target.parentElement.id)
+    }
+    console.log(hotel.bookedRooms)
+    postBooking(newBooking);
+    filterAvailable(dateInput.value.split('-').join('/'));
+  }
+}
+
 function hide(element) {
   element.classList.add('hidden');
 }
@@ -152,3 +186,5 @@ function hide(element) {
 function show(element) {
   element.classList.remove('hidden');
 }
+
+export default resolvePost
