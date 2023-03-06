@@ -20,19 +20,14 @@ class Hotel {
   }
 
   findAvailable(date) {
-    console.log(this.customers.currentCustomer.id)
     const availableBookings = this.bookings
     .filter(booking => booking.date === date);
-    console.log(availableBookings)
     const bookedRoomNumbers = availableBookings.map(booking => booking.roomNumber)
-    console.log(bookedRoomNumbers)
     this.availableRooms = this.rooms.filter(room => !bookedRoomNumbers.includes(room.number));
-    console.log(this.availableRooms)
   }
 
   showBooked() {
     let bookedRooms;
-    console.log(this.customers.currentCustomer)
     bookedRooms = this.bookings
       .filter(booking => booking.userID === this.customers.currentCustomer.id)
 
@@ -45,12 +40,15 @@ class Hotel {
 
   getTotal() {
     const roomNumbers = this.bookedRooms.map(room => room.roomNumber)
-    const totalSpent = this.rooms.filter(room => roomNumbers.includes(room.number))
-      .reduce((acc, curr) => {
-        acc += curr.costPerNight
-        return acc
-      }, 0)
-    return totalSpent
+    const roomCosts = this.rooms.reduce((acc, curr) => {
+      acc[curr.number] = curr.costPerNight
+      return acc
+    }, {})
+    const totalCost = roomNumbers.reduce((acc, curr) => {
+      acc += roomCosts[curr]
+      return acc
+    }, 0)
+    return totalCost
   }
 }
 
