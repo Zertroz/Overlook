@@ -18,6 +18,10 @@ const availablePage = document.querySelector('.available-page');
 const availableSection = document.querySelector('.available-section');
 const availableBtn = document.querySelector('.available-button');
 const bookingSectionBtn = document.querySelector('.bookings-section-button');
+const filterForm = document.querySelector('.filter-form');
+const dateInput = document.querySelector('.date-input');
+const typeSelect = document.querySelector('.type-select');
+const submitBtn = document.querySelector('.submit-button');
 
 let hotel;
 
@@ -29,6 +33,7 @@ window.addEventListener('load', () => {
       hotel = new Hotel (data[0].customers);
       hotel.generateRooms(data[1].rooms);
       hotel.generateBookings(data[2].bookings);
+      renderTypes()
     });
 })
 
@@ -40,12 +45,18 @@ bookingSectionBtn.addEventListener('click', () => {
   renderBookings();
   show(bookingsPage);
   hide(availablePage);
+  hide(filterForm);
 })
 
 availableBtn.addEventListener('click', () => {
-  showAvailable('2022/04/22');
+  showAvailable();
   hide(bookingsPage);
   show(availablePage);
+  show(filterForm);
+})
+
+submitBtn.addEventListener('click', () => {
+  filterAvailable();
 })
 
 // Functions
@@ -61,6 +72,7 @@ function login() {
     .then(user => hotel.customers.selectCurrentCustomer(user))
     .then(() => {
       renderBookings();
+      showAvailable();
       hide(loginPage);
       show(dashboard);
       show(bookingSectionBtn);
@@ -71,7 +83,7 @@ function login() {
 
 function renderBookings() {
   hotel.showBooked();
-  bookingsSection.innerHTML = ''
+  bookingsSection.innerHTML = '';
   hotel.bookedRooms.forEach(room => {
     bookingsSection.innerHTML += `
     <div class="booking-card" id="${room.id}">
@@ -84,27 +96,52 @@ function renderBookings() {
 }
 
 function showAvailable(date) {
+  if(date && hotel.availableRooms.length !== 0) {
+    availableSection.innerHTML = ''
+    hotel.availableRooms.forEach(room => {
+      if(room.bidet) {
+        availableSection.innerHTML += `
+        <div class="available-card">
+          <p>Room #${room.number}</p>
+          <p>This is a ${room.type} with ${room.numBeds} ${room.bedSize} bed(s). Bidet Included!</p>
+          <p>Cost per night: $${room.costPerNight}
+        </div>
+        `
+      } else {
+        availableSection.innerHTML += `
+        <div class="available-card">
+          <p>Room #${room.number}</p>
+          <p>This is a ${room.type} with ${room.numBeds} ${room.bedSize} bed(s).</p>
+          <p>Cost per night: $${room.costPerNight}
+        </div>
+        `
+      }
+    })
+  } else if (date && hotel.availableRooms.length === 0) {
+    availableSection.innerHTML = `<p>We deeply apologize, but there are no room available for this date.`
+  } else {
+    availableSection.innerHTML = `<p>Please select a date.</p>`
+  }
+}
+
+function filterAvailable() {
+  event.preventDefault();
+  const date = dateInput.value.split('-').join('/');
+  const type = typeSelect.value;
+
   hotel.showAvailable(date);
-  availableSection.innerHTML = ''
-  console.log(hotel.availableRooms)
-  hotel.availableRooms.forEach(room => {
-    if(room.bidet) {
-      availableSection.innerHTML += `
-      <div class="available-card">
-        <p>Room #${room.number}</p>
-        <p>This is a ${room.type} with ${room.numBeds} ${room.bedSize} bed(s). Bidet Included!</p>
-        <p>Cost per night: $${room.costPerNight}
-      </div>
-      `
-    } else {
-      availableSection.innerHTML += `
-      <div class="available-card">
-        <p>Room #${room.number}</p>
-        <p>This is a ${room.type} with ${room.numBeds} ${room.bedSize} bed(s).</p>
-        <p>Cost per night: $${room.costPerNight}
-      </div>
-      `
-    }
+  if(type !== 'none') {
+    hotel.filterByType(type);
+  }
+  showAvailable(date);
+}
+
+function renderTypes() {
+  typeSelect.innerHTML = '<option value="none">None</option>'
+  const roomList = hotel.rooms.map(room => room.type)
+  const roomTypes = [... new Set(roomList)]
+  roomTypes.forEach(room => {
+    typeSelect.innerHTML += `<option value="${room}">${room.toUpperCase()}</option>`
   })
 }
 
