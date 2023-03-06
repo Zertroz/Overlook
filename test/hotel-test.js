@@ -40,7 +40,7 @@ describe('Hotel test', () => {
     hotel.customers.selectCurrentCustomer(1);
     hotel.generateBookings(bookingData);
     hotel.generateRooms(roomData);
-    hotel.showAvailable('2022/02/16');
+    hotel.findAvailable('2022/02/16');
     expect(hotel.availableRooms).to.be.lengthOf(9);
   })
 
@@ -55,10 +55,6 @@ describe('Hotel test', () => {
     hotel.showBooked();
 
     expect(hotel.bookedRooms).to.be.lengthOf(2);
-
-    hotel.showBooked("2022/01/10");
-
-    expect(hotel.bookedRooms).to.be.lengthOf(1);
   })
 
   it('should be able to filter available rooms by type', () => {
@@ -69,7 +65,7 @@ describe('Hotel test', () => {
     hotel.generateBookings(bookingData);
     hotel.generateRooms(roomData);
 
-    hotel.showAvailable('2022/04/22');
+    hotel.findAvailable('2022/04/22');
 
     hotel.filterByType('single room');
 

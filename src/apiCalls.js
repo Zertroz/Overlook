@@ -21,7 +21,7 @@ function getSpecificCustomer(id) {
 }
 
 function postBooking(booking) {
-  fetch('http://localhost:3001/api/v1/bookings', {
+  return fetch('http://localhost:3001/api/v1/bookings', {
     method: "POST",
     body: JSON.stringify(booking),
     headers: {

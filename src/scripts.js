@@ -50,7 +50,8 @@ availableBtn.addEventListener('click', () => {
 })
 
 submitBtn.addEventListener('click', () => {
-  filterAvailable();
+  event.preventDefault();
+  showAvailable();
 })
 
 availablePage.addEventListener('click', () => {
@@ -69,14 +70,15 @@ function resolveData() {
     });
 }
 
-function resolvePost(date) {
+function resolvePost() {
   getData()
     .then((data) => {
       hotel.generateRooms(data[1].rooms);
       hotel.generateBookings(data[2].bookings);
+      console.log('hi')
       renderTypes();
-      hotel.showAvailable(date);
-      showAvailable(date);
+      hotel.showBooked()
+      showAvailable();
     });
 }
 
@@ -114,7 +116,13 @@ function renderBookings() {
   bookingsSection.innerHTML += `<p>Total Spent: $${hotel.getTotal().toFixed(2)}` 
 }
 
-function showAvailable(date) {
+function showAvailable() {
+  const date = dateInput.value.split('-').join('/');
+  console.log(date)
+  const type = typeSelect.value;
+  console.log(hotel.bookings)
+  hotel.findAvailable(date);
+  filterAvailable(type);
   if(date && hotel.availableRooms.length !== 0) {
     availableSection.innerHTML = ''
     hotel.availableRooms.forEach(room => {
@@ -145,16 +153,10 @@ function showAvailable(date) {
   }
 }
 
-function filterAvailable() {
-  event.preventDefault();
-  const date = dateInput.value.split('-').join('/');
-  const type = typeSelect.value;
-
-  hotel.showAvailable(date);
+function filterAvailable(type) {
   if(type !== 'none') {
     hotel.filterByType(type);
   }
-  showAvailable(date);
 }
 
 function renderTypes() {
@@ -173,9 +175,7 @@ function createNewBooking() {
       date: dateInput.value.split('-').join('/'),
       roomNumber: Number(event.target.parentElement.id)
     }
-    console.log(hotel.bookedRooms)
-    postBooking(newBooking);
-    filterAvailable(dateInput.value.split('-').join('/'));
+    postBooking(newBooking)
   }
 }
 
