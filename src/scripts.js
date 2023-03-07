@@ -41,10 +41,6 @@ window.addEventListener('load', () => {
 
 loginBtn.addEventListener('click', () => {
   login();
-  renderBookings();
-  show(bookingsPage);
-  hide(availablePage);
-  hide(filterForm);
 })
 
 bookingSectionBtn.addEventListener('click', () => {
@@ -85,10 +81,6 @@ function resolveData() {
       hotel.generateRooms(data[1].rooms);
       hotel.generateBookings(data[2].bookings);
       renderTypes();
-      login();
-      show(bookingsPage);
-      hide(availablePage);
-      hide(filterForm);
     });
 }
 
@@ -104,11 +96,9 @@ function resolvePost() {
 }
 
 function login() {
-  // event.preventDefault();
-  // const username = usernameInput.value;
-  const username = 'customer50'
-  // const password = passwordInput.value;
-  const password = 'overlook2021'
+  event.preventDefault();
+  const username = usernameInput.value;
+  const password = passwordInput.value;
   const userID = parseInt(username.split('customer')[1])
   if(password === 'overlook2021' && username.includes('customer') && userID >= 1 && userID <= 50) {
     getSpecificCustomer(userID)
