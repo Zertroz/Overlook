@@ -4,6 +4,7 @@ import './css/styles.css';
 import './images/turing-logo.png'
 import { getData, getSpecificCustomer, postBooking } from './apiCalls'
 import Hotel from './classes/Hotel';
+import MicroModal from "micromodal";
 
 // Global Variables
 
@@ -23,6 +24,8 @@ const dateInput = document.querySelector('.date-input');
 const typeSelect = document.querySelector('.type-select');
 const submitBtn = document.querySelector('.submit-button');
 const errorMsg = document.querySelector('.error-msg');
+const modalTitle = document.querySelector('.modal-title');
+const modalCont = document.querySelector('.modal-content');
 
 let hotel;
 
@@ -59,6 +62,12 @@ availablePage.addEventListener('click', () => {
   createNewBooking();
 })
 
+bookingsSection.addEventListener('click', () => {
+  if(event.target.className === 'booking-card' || event.target.parentElement.className === 'booking-card') {
+    openRoomInfo();
+  }
+})
+
 // Functions
 
 function resolveData() {
@@ -87,7 +96,6 @@ function login() {
   const username = usernameInput.value;
   const password = passwordInput.value;
   const userID = parseInt(username.split('customer')[1])
-  console.log(userID)
   if(password === 'overlook2021' && username.includes('customer') && userID >= 1 && userID <= 50) {
     getSpecificCustomer(userID)
     .then(user => hotel.customers.selectCurrentCustomer(user))
@@ -179,6 +187,28 @@ function createNewBooking() {
       roomNumber: Number(event.target.parentElement.id)
     }
     postBooking(newBooking)
+  }
+}
+
+function openRoomInfo() {
+  let target
+  if (event.target.className === 'booking-card')  {
+    target = event.target.id
+  } else {
+    target = event.target.parentElement.id
+  }
+  const targetBooking = hotel.bookings.find(booking => booking.id === target)
+  const targetRoom = hotel.rooms.find(room => room.number === targetBooking.roomNumber)
+  MicroModal.show('modal-1');
+  modalTitle.innerText = `${targetRoom.type.toUpperCase()}`
+  if (targetRoom.bidet) {
+    modalCont.innerHTML = `<p>Room #${targetRoom.number}</p>
+    <p>This is a ${targetRoom.type} with ${targetRoom.numBeds} ${targetRoom.bedSize} bed(s). Bidet Included!</p>
+    <p>Cost per night: $${targetRoom.costPerNight}</p>`
+  } else {
+    modalCont.innerHTML = `<p>Room #${targetRoom.number}</p>
+    <p>This is a ${targetRoom.type} with ${targetRoom.numBeds} ${targetRoom.bedSize} bed(s).</p>
+    <p>Cost per night: $${targetRoom.costPerNight}</p>`
   }
 }
 
