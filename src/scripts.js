@@ -117,7 +117,8 @@ function renderBookings() {
     </div>
     `;
   });
-  bookingsSection.innerHTML += `<p>Total Spent: $${hotel.getTotal().toFixed(2)}` 
+  const totalCostSection = document.querySelector('.total-cost')
+  totalCostSection.innerHTML = `<p>Total Spent: $${hotel.getTotal().toFixed(2)}` 
 }
 
 function showAvailable() {
