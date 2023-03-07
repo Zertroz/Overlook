@@ -13,8 +13,7 @@ class Hotel {
 
   generateBookings(data) {
     this.bookings = data.map(booking => new Booking (booking));
-    console.log(new Date(this.bookings[1].date))
-    this.bookings.sort((a, b) => (a.date < b.date) ? 1 : (a.date > b.date) ? -1 : 0);
+    this.bookings.sort((a, b) => new Date(b.date) - new Date(a.date));
   }
 
   generateRooms(data) {

@@ -1,8 +1,12 @@
 // Imports
 
 import './css/styles.css';
-import './images/turing-logo.png'
-import { getData, getSpecificCustomer, postBooking } from './apiCalls'
+import './images/turing-logo.png';
+import './images/suite.png';
+import './images/single-room.png';
+import './images/residential-suite.png';
+import './images/junior-suite.png';
+import { getData, getSpecificCustomer, postBooking } from './apiCalls';
 import Hotel from './classes/Hotel';
 import MicroModal from "micromodal";
 
@@ -140,6 +144,7 @@ function showAvailable() {
       if(room.bidet) {
         availableSection.innerHTML += `
         <div class="available-card" id="${room.number}">
+          <img src="./images/${room.type.replace(' ', '-')}.png" alt="image of ${room.type}" />
           <p>Room #${room.number}</p>
           <p>This is a ${room.type} with ${room.numBeds} ${room.bedSize} bed(s). Bidet Included!</p>
           <p>Cost per night: $${room.costPerNight}</p>
@@ -149,6 +154,7 @@ function showAvailable() {
       } else {
         availableSection.innerHTML += `
         <div class="available-card" id="${room.number}">
+          <img src="./images/${room.type.replace(' ', '-')}.png" alt="image of ${room.type}" />
           <p>Room #${room.number}</p>
           <p>This is a ${room.type} with ${room.numBeds} ${room.bedSize} bed(s).</p>
           <p>Cost per night: $${room.costPerNight}</p>
@@ -202,11 +208,13 @@ function openRoomInfo() {
   MicroModal.show('modal-1');
   modalTitle.innerText = `${targetRoom.type.toUpperCase()}`
   if (targetRoom.bidet) {
-    modalCont.innerHTML = `<p>Room #${targetRoom.number}</p>
+    modalCont.innerHTML = `<img class="modal-img" src="./images/${targetRoom.type.replace(' ', '-')}.png" alt="image of ${targetRoom.type}" />
+    <p>Room #${targetRoom.number}</p>
     <p>This is a ${targetRoom.type} with ${targetRoom.numBeds} ${targetRoom.bedSize} bed(s). Bidet Included!</p>
     <p>Cost per night: $${targetRoom.costPerNight}</p>`
   } else {
-    modalCont.innerHTML = `<p>Room #${targetRoom.number}</p>
+    modalCont.innerHTML = `<img class="modal-img" src="./images/${targetRoom.type.replace(' ', '-')}.png" alt="image of ${targetRoom.type}" />
+    <p>Room #${targetRoom.number}</p>
     <p>This is a ${targetRoom.type} with ${targetRoom.numBeds} ${targetRoom.bedSize} bed(s).</p>
     <p>Cost per night: $${targetRoom.costPerNight}</p>`
   }
