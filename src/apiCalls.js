@@ -3,25 +3,37 @@ import resolvePost from "./scripts"
 function getAllCustomers() {
   return fetch('http://localhost:3001/api/v1/customers')
   .then(response => response.json())
-  .catch(error => console.log(error))
+  .catch(error => {
+    console.log(error)
+    alert('Our server is currently down. Please try again soon.')
+  })
 }
 
 function getAllRooms() {
   return fetch('http://localhost:3001/api/v1/rooms')
   .then(response => response.json())
-  .catch(error => console.log(error))
+  .catch(error => {
+    console.log(error)
+    alert('Our server is currently down. Please try again soon.')
+  })
 }
 
 function getAllBookings() {
   return fetch('http://localhost:3001/api/v1/bookings')
   .then(response => response.json())
-  .catch(error => console.log(error))
+  .catch(error => {
+    console.log(error)
+    alert('Our server is currently down. Please try again soon.')
+  })
 }
 
 function getSpecificCustomer(id) {
   return fetch(`http://localhost:3001/api/v1/customers/${id}`)
   .then(response => response.json())
-  .catch(error => console.log(error))
+  .catch(error => {
+    console.log(error)
+    alert('Our server is currently down. Please try again soon.')
+  })
 }
 
 function postBooking(booking) {
