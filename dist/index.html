@@ -16,20 +16,25 @@
   </header>
   <main>
     <section class="login">
-      <p>Login</p>
+      <h2>Login</h2>
       <form class="login-form">
-        <label for="username">Username</label>
-        <input class="username" type="text" required />
-        <label for="password">Password</label>
-        <input class="password" type="password" required>
+        <div>
+          <label for="username">Username</label>
+          <input class="username" type="text" required />
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input class="password" type="password" required>
+        </div>
         <input class="login-button" type="submit" value="Login">
       </form>
       <h3 class="error-msg"></h3>
     </section>
     <section class="dashboard hidden">
       <aside>
-        <form class="filter-form">
-          <p>Filter</p>
+        <form class="filter-form hidden">
+          <h2>Available Rooms</h2>
+          <h3>Filter</h3>
           <input class="date-input" type="date" name="Input date" />
           <label for="room-type">Room Type
             <select class="type-select" name="room-type" id="room-type">
@@ -38,15 +43,15 @@
           <input class="submit-button" type="submit" />
         </form>
       </aside>
-      <section class="available-page">
-        <h2>Available Rooms</h2>
+      <section class="available-page hidden">
         <div class="available-section">
         </div>
       </section>
-      <section class="bookings-page hidden">
+      <section class="bookings-page show">
         <h2>Your bookings</h2>
         <div class="bookings-section">    
         </div>
+        <div class="total-cost"></div>
       </section>
     </section>
   </main>

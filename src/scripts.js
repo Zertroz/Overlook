@@ -111,13 +111,14 @@ function renderBookings() {
   bookingsSection.innerHTML = '';
   hotel.bookedRooms.forEach(room => {
     bookingsSection.innerHTML += `
-    <div class="booking-card" id="${room.id}" tabindex="0">
+    <button class="booking-card" id="${room.id}" tabindex="0">
       <p>Room ${room.roomNumber}</p>
       <p>${room.date}</p>
-    </div>
+    </button>
     `;
   });
-  bookingsSection.innerHTML += `<p>Total Spent: $${hotel.getTotal().toFixed(2)}` 
+  const totalCostSection = document.querySelector('.total-cost')
+  totalCostSection.innerHTML = `<p>Total Spent: $${hotel.getTotal().toFixed(2)}` 
 }
 
 function showAvailable() {
