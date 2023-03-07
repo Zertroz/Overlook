@@ -111,10 +111,10 @@ function renderBookings() {
   bookingsSection.innerHTML = '';
   hotel.bookedRooms.forEach(room => {
     bookingsSection.innerHTML += `
-    <div class="booking-card" id="${room.id}" tabindex="0">
+    <button class="booking-card" id="${room.id}" tabindex="0">
       <p>Room ${room.roomNumber}</p>
       <p>${room.date}</p>
-    </div>
+    </button>
     `;
   });
   const totalCostSection = document.querySelector('.total-cost')
