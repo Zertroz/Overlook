@@ -41,6 +41,10 @@ window.addEventListener('load', () => {
 
 loginBtn.addEventListener('click', () => {
   login();
+  renderBookings();
+  show(bookingsPage);
+  hide(availablePage);
+  hide(filterForm);
 })
 
 bookingSectionBtn.addEventListener('click', () => {
@@ -81,6 +85,10 @@ function resolveData() {
       hotel.generateRooms(data[1].rooms);
       hotel.generateBookings(data[2].bookings);
       renderTypes();
+      login();
+      show(bookingsPage);
+      hide(availablePage);
+      hide(filterForm);
     });
 }
 
@@ -96,9 +104,11 @@ function resolvePost() {
 }
 
 function login() {
-  event.preventDefault();
-  const username = usernameInput.value;
-  const password = passwordInput.value;
+  // event.preventDefault();
+  // const username = usernameInput.value;
+  const username = 'customer50'
+  // const password = passwordInput.value;
+  const password = 'overlook2021'
   const userID = parseInt(username.split('customer')[1])
   if(password === 'overlook2021' && username.includes('customer') && userID >= 1 && userID <= 50) {
     getSpecificCustomer(userID)
@@ -144,8 +154,8 @@ function showAvailable() {
       if(room.bidet) {
         availableSection.innerHTML += `
         <div class="available-card" id="${room.number}">
-          <img src="./images/${room.type.replace(' ', '-')}.png" alt="image of ${room.type}" />
-          <p>Room #${room.number}</p>
+          <img src="./images/${room.type.replace(' ', '-')}.png" alt="image of ${room.type}" tabindex="0" />
+          <h3>Room #${room.number}</h3>
           <p>This is a ${room.type} with ${room.numBeds} ${room.bedSize} bed(s). Bidet Included!</p>
           <p>Cost per night: $${room.costPerNight}</p>
           <button class="book-button">Book this room</button>
@@ -154,8 +164,8 @@ function showAvailable() {
       } else {
         availableSection.innerHTML += `
         <div class="available-card" id="${room.number}">
-          <img src="./images/${room.type.replace(' ', '-')}.png" alt="image of ${room.type}" />
-          <p>Room #${room.number}</p>
+          <img src="./images/${room.type.replace(' ', '-')}.png" alt="image of ${room.type}" tabindex="0" />
+          <h3>Room #${room.number}</h3>
           <p>This is a ${room.type} with ${room.numBeds} ${room.bedSize} bed(s).</p>
           <p>Cost per night: $${room.costPerNight}</p>
           <button class="book-button">Book this room</button>
@@ -208,13 +218,13 @@ function openRoomInfo() {
   MicroModal.show('modal-1');
   modalTitle.innerText = `${targetRoom.type.toUpperCase()}`
   if (targetRoom.bidet) {
-    modalCont.innerHTML = `<img class="modal-img" src="./images/${targetRoom.type.replace(' ', '-')}.png" alt="image of ${targetRoom.type}" />
-    <p>Room #${targetRoom.number}</p>
+    modalCont.innerHTML = `<img class="modal-img" src="./images/${targetRoom.type.replace(' ', '-')}.png" alt="image of ${targetRoom.type}" tabindex="0" />
+    <h3>Room #${targetRoom.number}</h3>
     <p>This is a ${targetRoom.type} with ${targetRoom.numBeds} ${targetRoom.bedSize} bed(s). Bidet Included!</p>
     <p>Cost per night: $${targetRoom.costPerNight}</p>`
   } else {
-    modalCont.innerHTML = `<img class="modal-img" src="./images/${targetRoom.type.replace(' ', '-')}.png" alt="image of ${targetRoom.type}" />
-    <p>Room #${targetRoom.number}</p>
+    modalCont.innerHTML = `<img class="modal-img" src="./images/${targetRoom.type.replace(' ', '-')}.png" alt="image of ${targetRoom.type}" tabindex="0" />
+    <h3>Room #${targetRoom.number}</h3>
     <p>This is a ${targetRoom.type} with ${targetRoom.numBeds} ${targetRoom.bedSize} bed(s).</p>
     <p>Cost per night: $${targetRoom.costPerNight}</p>`
   }
@@ -222,10 +232,12 @@ function openRoomInfo() {
 
 function hide(element) {
   element.classList.add('hidden');
+  element.setAttribute('aria-hidden', true);
 }
 
 function show(element) {
   element.classList.remove('hidden');
+  element.setAttribute('aria-hidden', false);
 }
 
 export default resolvePost

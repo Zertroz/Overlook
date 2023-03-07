@@ -8,14 +8,14 @@
 </head>
 <body>
   <header>
-    <h1>Overlook</h1>
+    <h1>Overlook Hotel</h1>
     <nav>
-      <button class="available-button hidden">Book a room!</button>
-      <button class="bookings-section-button hidden">Check your bookings!</button>
+      <button class="available-button hidden" aria-hidden="false">Book a room!</button>
+      <button class="bookings-section-button hidden" aria-hidden="false">Check your bookings!</button>
     </nav>
   </header>
   <main>
-    <section class="login">
+    <section class="login hidden" aria-hidden="true">
       <h2>Login</h2>
       <form class="login-form">
         <div>
@@ -26,11 +26,11 @@
           <label for="password">Password</label>
           <input class="password" type="password" required>
         </div>
-        <input class="login-button" type="submit" value="Login">
+        <input role="button" class="login-button" type="submit" value="Login">
       </form>
       <h3 class="error-msg"></h3>
     </section>
-    <section class="dashboard hidden">
+    <section class="dashboard hidden" aria-hidden="true">
       <aside>
         <form class="filter-form hidden">
           <h2>Available Rooms</h2>
@@ -43,11 +43,11 @@
           <input class="submit-button" type="submit" />
         </form>
       </aside>
-      <section class="available-page hidden">
+      <section class="available-page hidden" aria-hidden="true">
         <div class="available-section">
         </div>
       </section>
-      <section class="bookings-page show">
+      <section class="bookings-page" aria-hidden="true">
         <h2>Your bookings</h2>
         <div class="bookings-section">    
         </div>

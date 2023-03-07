@@ -29,6 +29,7 @@ class Hotel {
 
   showBooked() {
     let bookedRooms;
+    console.log(this.customers.currentCustomer.id)
     bookedRooms = this.bookings
       .filter(booking => booking.userID === this.customers.currentCustomer.id)
 
